@@ -527,23 +527,18 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Switch / Case</from>
+      <from>Route Monthly Override Flow</from>
       <to>Get System Info</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Switch / Case</from>
+      <from>Route Monthly Override Flow</from>
       <to>get fiscal month range for month</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
       <from>Get Variables</from>
       <to>If field value is null</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>If field value is null</from>
-      <to>Switch / Case</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -554,6 +549,11 @@
     <hop>
       <from>format mtd start date 2</from>
       <to>set start date var</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>If field value is null</from>
+      <to>Route Monthly Override Flow</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -582,8 +582,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>464</xloc>
-      <yloc>128</yloc>
+      <xloc>592</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -611,6 +611,30 @@
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
+      <field>
+        <name>start_date</name>
+        <variable>${start_date}</variable>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>end_date</name>
+        <variable>${end_date}</variable>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
     </fields>
     <cluster_schema />
     <remotesteps>
@@ -620,8 +644,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>96</xloc>
-      <yloc>128</yloc>
+      <xloc>176</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -659,13 +683,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>208</xloc>
-      <yloc>128</yloc>
+      <xloc>288</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Switch / Case</name>
+    <name>Route Monthly Override Flow</name>
     <type>SwitchCase</type>
     <description />
     <distribute>Y</distribute>
@@ -696,8 +720,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>336</xloc>
-      <yloc>128</yloc>
+      <xloc>464</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -769,8 +793,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>592</xloc>
-      <yloc>128</yloc>
+      <xloc>720</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -836,8 +860,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>720</xloc>
-      <yloc>128</yloc>
+      <xloc>848</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -903,8 +927,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>976</xloc>
-      <yloc>128</yloc>
+      <xloc>1104</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -970,8 +994,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>976</xloc>
-      <yloc>336</yloc>
+      <xloc>1104</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1017,8 +1041,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>848</xloc>
-      <yloc>128</yloc>
+      <xloc>976</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1070,8 +1094,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>800</xloc>
-      <yloc>336</yloc>
+      <xloc>928</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1109,8 +1133,8 @@ Alert(dateAdd(d1, "wd", 5));</jsScript_script>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>1104</xloc>
-      <yloc>128</yloc>
+      <xloc>1232</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

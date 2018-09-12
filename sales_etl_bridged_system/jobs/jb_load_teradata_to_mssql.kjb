@@ -13,7 +13,7 @@
   <parameters>
     <parameter>
       <name>end_date</name>
-      <default_value />
+      <default_value>2999-01-01</default_value>
       <description />
     </parameter>
     <parameter>
@@ -28,7 +28,7 @@
     </parameter>
     <parameter>
       <name>start_date</name>
-      <default_value />
+      <default_value>1900-01-01</default_value>
       <description />
     </parameter>
   </parameters>
@@ -350,7 +350,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>256</xloc>
+      <xloc>384</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -380,7 +380,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>960</xloc>
+      <xloc>1088</xloc>
       <yloc>400</yloc>
     </entry>
     <entry>
@@ -426,7 +426,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>256</xloc>
+      <xloc>384</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -472,7 +472,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>256</xloc>
+      <xloc>384</xloc>
       <yloc>352</yloc>
     </entry>
     <entry>
@@ -518,7 +518,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>448</xloc>
+      <xloc>576</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -564,7 +564,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>448</xloc>
+      <xloc>576</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -610,7 +610,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>448</xloc>
+      <xloc>576</xloc>
       <yloc>352</yloc>
     </entry>
     <entry>
@@ -656,7 +656,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>608</xloc>
+      <xloc>736</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -702,7 +702,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>608</xloc>
+      <xloc>736</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -748,7 +748,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>608</xloc>
+      <xloc>736</xloc>
       <yloc>352</yloc>
     </entry>
     <entry>
@@ -794,7 +794,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
+      <xloc>928</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -840,7 +840,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>800</xloc>
+      <xloc>928</xloc>
       <yloc>352</yloc>
     </entry>
     <entry>
@@ -886,7 +886,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>1</nr>
-      <xloc>800</xloc>
+      <xloc>928</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -930,6 +930,28 @@
       <xloc>208</xloc>
       <yloc>32</yloc>
     </entry>
+    <entry>
+      <name>Simple evaluation</name>
+      <description />
+      <type>SIMPLE_EVAL</type>
+      <valuetype>variable</valuetype>
+      <fieldname />
+      <variablename>${start_date}</variablename>
+      <fieldtype>string</fieldtype>
+      <mask />
+      <comparevalue>1900-01-01</comparevalue>
+      <minvalue />
+      <maxvalue />
+      <successcondition>equal</successcondition>
+      <successnumbercondition>equal</successnumbercondition>
+      <successbooleancondition>false</successbooleancondition>
+      <successwhenvarset>N</successwhenvarset>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>64</xloc>
+      <yloc>128</yloc>
+    </entry>
   </entries>
   <hops>
     <hop>
@@ -937,7 +959,7 @@
       <to>trf_extract_td_brandSales</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
-      <enabled>Y</enabled>
+      <enabled>N</enabled>
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
     </hop>
@@ -1041,8 +1063,17 @@
       <unconditional>N</unconditional>
     </hop>
     <hop>
+      <from>trf_get_date_ranges</from>
+      <to>trf_extract_td_sales</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
       <from>START</from>
-      <to>trf_get_date_ranges</to>
+      <to>Simple evaluation</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -1050,12 +1081,21 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>trf_get_date_ranges</from>
-      <to>trf_extract_td_sales</to>
+      <from>Simple evaluation</from>
+      <to>trf_get_date_ranges</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Simple evaluation</from>
+      <to>trf_extract_td_sales</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
   </hops>
