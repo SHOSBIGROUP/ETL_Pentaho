@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_avgTicket</name>
+    <name>patch_comp_date_ly</name>
     <description />
     <extended_description />
     <trans_version />
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>end_date</name>
-        <default_value>2018-03-04</default_value>
-        <description />
-      </parameter>
-      <parameter>
-        <name>start_date</name>
-        <default_value>2018-03-04</default_value>
-        <description />
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -438,20 +427,20 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2018/03/27 13:48:54.128</created_date>
+    <created_date>2018/10/10 13:42:47.633</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/03/27 13:48:54.128</modified_date>
+    <modified_date>2018/10/10 13:42:47.633</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <connection>
-    <name>mssql sho_staging</name>
-    <server>${DB_SERVERNAME_BI_MSSQL}</server>
+    <name>mssql sho_dw</name>
+    <server>AZSQL01.ads.shos.com</server>
     <type>MSSQLNATIVE</type>
     <access>Native</access>
-    <database>sho_staging</database>
+    <database>sho_dw</database>
     <port>1433</port>
     <username>${DB_SHO_MSSQL_ETL_USERNAME}</username>
     <password>${DB_SHO_MSSQL_ETL_PW}</password>
@@ -562,80 +551,18 @@
   </connection>
   <order>
     <hop>
-      <from>teradata avg ticket</from>
-      <to>Table output</to>
+      <from>Get Comparable LY Date</from>
+      <to>Select values</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Select values</from>
+      <to>Update Comp Date</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Table output</name>
-    <type>TableOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <connection>mssql sho_staging</connection>
-    <schema>teradata</schema>
-    <table>td_sales_dly_avg_ticket</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field />
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field />
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field />
-    <fields>
-      <field>
-        <column_name>LOC_NO</column_name>
-        <stream_name>LOC_NO</stream_name>
-      </field>
-      <field>
-        <column_name>TRS_DT</column_name>
-        <stream_name>TRS_DT</stream_name>
-      </field>
-      <field>
-        <column_name>DIV_NO</column_name>
-        <stream_name>DIV_NO</stream_name>
-      </field>
-      <field>
-        <column_name>NETSLS</column_name>
-        <stream_name>NetSLS</stream_name>
-      </field>
-      <field>
-        <column_name>UNITQTY</column_name>
-        <stream_name>UNITQTY</stream_name>
-      </field>
-      <field>
-        <column_name>REC_LOAD_DTM</column_name>
-        <stream_name>rec_load_dtm</stream_name>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>352</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>teradata avg ticket</name>
+    <name>Get Comparable LY Date</name>
     <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
@@ -646,44 +573,25 @@
       <schema_name />
     </partitioning>
     <connection>teradata_pos_dw_views</connection>
-    <sql>SELECT 					
-					 		a.Loc_No ,
-					 		a.TRS_DT ,							 
-							a.div_no ,
-							current_timestamp as rec_load_dtm,
+    <sql>select  
+ty.day_no,
+d.day_no - interval '7' day  as comp_ly_date
 
-							SUM(
-							
-							            (a.REG_GRS_SLL_DLR -a.REG_RTR_SLL_DLR - a.REG_RDU_SLL_DLR)  +  (a.PRO_GRS_SLL_DLR -a.PRO_RTR_SLL_DLR - a.PRO_RDU_SLL_DLR)
-									 +  (a.CLR_GRS_SLL_DLR -a.CLR_RTR_SLL_DLR - a.CLR_RDU_SLL_DLR) 
-									 
-								) AS NetSLS,
-							SUM(
-							
-							            (a.REG_GRS_UN_QT-a.REG_RTR_UN_QT- a.REG_RDU_UN_QT)  +  (a.PRO_GRS_UN_QT-a.PRO_RTR_UN_QT- a.PRO_RDU_UN_QT)
-									 +  (a.CLR_GRS_UN_QT-a.CLR_RTR_UN_QT- a.CLR_RDU_UN_QT) 
-									 
-								) AS UNITQTY
-							
-										
-FROM 						sprs_dw_views.Dly_Cls_Loc_Sales  a ,
- 									shc_work_tbls.TS_SHO_locations   Loc
-where
- 						  a.Loc_No  = Loc.Loc_No    and
- 						(	(a.div_no =	22 and  a.ln_no  in ( 22,21,15,9,25,20,41) ) or 		
- 							(a.div_no =	26 and  a.ln_no  in ( 1,2,4))  or
- 							(a.div_no =	46 and  a.ln_no  in ( 1,2,4,5,51,52) ) 
- 						)  and
-  
-   					a.Sls_Typ_Cd IN ('C','F','I','L','R','S','T')   and
-    				a.TRS_DT  between  date '${start_date}' and date '${end_date}'
-		 
+ from
+      sprs_dw_views.days d, sprs_dw_views.days ty  ,SPRS_DW_VIEWS.MONTHS M,  SPRS_DW_VIEWS.weeks w
+ where
+ty.day_no between date '2018-02-04' and date '2019-02-02'
+and ty.dow = d.dow and ty.wk_no = d.wk_no+99 
+  and  d.wk_no = w.wk_no
+ and w.mth_no = M.Mth_no
 
-GROUP BY 1, 2, 3, 4</sql>
+ 
+
+ order by ty.day_no</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
-    <variables_active>Y</variables_active>
+    <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
     <cluster_schema />
     <remotesteps>
@@ -693,8 +601,119 @@ GROUP BY 1, 2, 3, 4</sql>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>192</xloc>
-      <yloc>80</yloc>
+      <xloc>240</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Select values</name>
+    <type>SelectValues</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <fields>
+      <field>
+        <name>DAY_NO</name>
+      </field>
+      <field>
+        <name>comp_ly_date</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>DAY_NO</name>
+        <rename>DAY_NO</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale />
+        <date_format_timezone />
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding />
+        <decimal_symbol />
+        <grouping_symbol />
+        <currency_symbol />
+        <storage_type />
+      </meta>
+      <meta>
+        <name>comp_ly_date</name>
+        <rename>comp_ly_date</rename>
+        <type>String</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask>yyyy-MM-dd</conversion_mask>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale />
+        <date_format_timezone />
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding />
+        <decimal_symbol />
+        <grouping_symbol />
+        <currency_symbol />
+        <storage_type />
+      </meta>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>384</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Update Comp Date</name>
+    <type>Update</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <connection>mssql sho_dw</connection>
+    <skip_lookup>N</skip_lookup>
+    <commit>100</commit>
+    <use_batch>Y</use_batch>
+    <error_ignored>N</error_ignored>
+    <ignore_flag_field />
+    <lookup>
+      <schema>dim</schema>
+      <table>calendar</table>
+      <key>
+        <name>DAY_NO</name>
+        <field>calendar_dt</field>
+        <condition>=</condition>
+        <name2 />
+      </key>
+      <value>
+        <name>comparable_last_year_calendar_dt</name>
+        <rename>comp_ly_date</rename>
+      </value>
+    </lookup>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>560</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
