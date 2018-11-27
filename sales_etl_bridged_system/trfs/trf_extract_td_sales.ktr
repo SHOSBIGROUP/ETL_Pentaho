@@ -512,8 +512,8 @@
     <access>Native</access>
     <database>POS_DW_VIEWS</database>
     <port>1025</port>
-    <username>jmarlo1</username>
-    <password>Encrypted 2be98afc86aa7f2e4a10ca2208998bad6</password>
+    <username>${DB_SHC_TERADATA_ETL_USERNAME}</username>
+    <password>${DB_SHC_TERADATA_ETL_PW}</password>
     <servername />
     <data_tablespace />
     <index_tablespace />
