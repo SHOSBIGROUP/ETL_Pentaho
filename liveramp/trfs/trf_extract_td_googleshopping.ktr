@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_liveramp</name>
+    <name>trf_extract_td_googleshopping</name>
     <description/>
     <extended_description/>
     <trans_version/>
     <trans_type>Normal</trans_type>
-    <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>end_date</name>
-        <default_value>2018-03-04</default_value>
-        <description/>
-      </parameter>
-      <parameter>
-        <name>start_date</name>
-        <default_value>2018-03-04</default_value>
-        <description/>
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -438,31 +427,27 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2018/03/27 13:48:54.128</created_date>
+    <created_date>2018/11/16 11:24:06.193</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/03/27 13:48:54.128</modified_date>
-    <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
+    <modified_date>2018/11/16 11:24:06.193</modified_date>
+    <key_for_session_key/>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <connection>
-    <name>liveramp_connect</name>
+    <name>sel_td_sprs_dw_views</name>
     <server>${DB_SERVERNAME_SHC_TERADATA}</server>
     <type>TERADATA</type>
     <access>Native</access>
-    <database>pos_dw_views</database>
+    <database>sprs_dw_views</database>
     <port>1025</port>
     <username>smuthuk</username>
-    <password>Encrypted 2be98afc86aa7f2e49d18bc79ca87f88c</password>
+    <password>Encrypted 2be98afc86aa7f2e49d18bc79ca87f88f</password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
     <attributes>
-      <attribute>
-        <code>EXTRA_OPTION_TERADATA.DBS_PORT</code>
-        <attribute>1025</attribute>
-      </attribute>
       <attribute>
         <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
         <attribute>N</attribute>
@@ -503,11 +488,66 @@
   </connection>
   <order>
     <hop>
-      <from>teradata sales by customer1</from>
+      <from>Execute SQL script</from>
       <to>Text file output</to>
       <enabled>Y</enabled>
     </hop>
   </order>
+  <step>
+    <name>Execute SQL script</name>
+    <type>ExecSQL</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>sel_td_sprs_dw_views</connection>
+    <execute_each_row>N</execute_each_row>
+    <single_statement>Y</single_statement>
+    <replace_variables>N</replace_variables>
+    <quoteString>N</quoteString>
+    <sql>select div_no,itm_no,item_desc,sales,top20 from (												
+select div_no,itm_no,item_desc,sales, 										
+(rank()  over (partition by div_no order by div_no,sales desc)) as top20												
+from (												
+SELECT     --  top 20                 												
+   a.DIV_OGP_NO as div_no,       a.PRD_ITM_NO as itm_no,    P.prd_ds as item_desc , 																								
+ max(a.POS_SLS_TRS_AM/prd_qt)  as sales 												
+FROM  												
+   ( pos_dw_views.posxtpp_prd_lin a LEFT JOIN  lci_dw_views.lcixtfa_fty e ON a.fty_id_no = e.fty_id_no)																								
+    join sprs_dw_views.product p on p.div_no=a.DIV_OGP_NO and a.PRD_ITM_NO=p.itm_no												
+WHERE   a.fty_id_no = e.fty_id_no 												
+        AND e.fty_sbt_cd IN ( 'L','L3','H','H3','O','O3',  'M')												
+        and a.DIV_OGP_NO  in ('046','022','026','071')												
+        AND A.TRS_DT >= date - 14												
+        and a.POS_SLS_TRS_AM>0												
+        group by   a.DIV_OGP_NO   ,   a.PRD_ITM_NO ,P.prd_ds) aa ) aaa												
+        where top20&lt;=20												
+        order by 1,4												
+							</sql>
+    <set_params>N</set_params>
+    <insert_field/>
+    <update_field/>
+    <delete_field/>
+    <read_field/>
+    <arguments>
+    </arguments>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>208</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
   <step>
     <name>Text file output</name>
     <type>TextFileOutput</type>
@@ -519,7 +559,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <separator>|</separator>
+    <separator>;</separator>
     <enclosure>"</enclosure>
     <enclosure_forced>N</enclosure_forced>
     <enclosure_fix_disabled>N</enclosure_fix_disabled>
@@ -533,7 +573,7 @@
     <fileNameField/>
     <create_parent_folder>Y</create_parent_folder>
     <file>
-      <name>C:\Program Files\data-integration\ETL_Pentaho\liveramp\data\LiveRamp_${reportdate}</name>
+      <name>C:\Program Files\data-integration\ETL_Pentaho\liveramp\data</name>
       <servlet_output>N</servlet_output>
       <do_not_open_new_file_init>N</do_not_open_new_file_init>
       <extention>txt</extention>
@@ -542,182 +582,14 @@
       <haspartno>N</haspartno>
       <add_date>N</add_date>
       <add_time>N</add_time>
-      <SpecifyFormat>N</SpecifyFormat>
+      <SpecifyFormat>Y</SpecifyFormat>
       <date_time_format>yyyy-MM-dd</date_time_format>
-      <add_to_result_filenames>N</add_to_result_filenames>
+      <add_to_result_filenames>Y</add_to_result_filenames>
       <pad>N</pad>
       <fast_dump>N</fast_dump>
       <splitevery>0</splitevery>
     </file>
     <fields>
-      <field>
-        <name>First_Name</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Last_Name</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Address_1</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Address_2</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>City</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>State</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Zip</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Email_1</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Email_2</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Email_3</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Email_4</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Product_Group</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Time_Stamp</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>Conversion_Amount</name>
-        <type>Number</type>
-        <format>0.#####</format>
-        <currency/>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
     </fields>
     <cluster_schema/>
     <remotesteps>
@@ -727,104 +599,8 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>944</xloc>
-      <yloc>96</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>teradata sales by customer1</name>
-    <type>TableInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <connection>liveramp_connect</connection>
-    <sql>SELECT  DISTINCT  CASE WHEN  c.cus_lst_nm is not null  THEN c.cus_fst_nm ELSE 'a' END  AS First_Name, 
-            CASE WHEN  c.cus_lst_nm is not null THEN c.cus_lst_nm ELSE 'a' END  AS Last_Name, 
-                c.st_ln1_ad AS Address_1, 
-                c.st_ln2_ad AS Address_2, 
-                c.cty_nm    AS City, 
-                c.ste_cd    AS State, 
-                c.zip_cd    AS Zip, 
-                  eml_ad    AS Email_1, 
-               ' NULL'        AS Email_2, 
-                'NULL'        AS Email_3, 
-               ' NULL'        AS Email_4, 
-                CASE 
-                                WHEN format_sub_type LIKE 'L%' THEN 'instore-shos-outlet' 
-                                WHEN format_sub_type LIKE 'O%' THEN 'instore-shos-hts' 
-                                WHEN format_sub_type LIKE 'H%' THEN  'instore-shos-ahs'
-                END       AS Product_Group, 
-               CAST( TRS_DT AS VARCHAR(10)) || ' ' || CAST( TRS_TM AS VARCHAR(8)) AS Time_Stamp,
-                trs_am AS Conversion_Amount 
-              FROM            ( 
-                       SELECT orig_facility_nbr AS fty_id_no, 
-                              format_sub_type 
-                       FROM   lci_dw_views.mstr_locn_tbl 
-                       WHERE  format_sub_type LIKE   'L%'  OR 
-                              format_sub_type LIKE   'O%' OR 
-                              format_sub_type LIKE   'H%' 
-   ) s 
-INNER JOIN 
-                ( 
-                       SELECT fty_id_no, 
-                              trs_dt, 
-                              trs_tm, 
-                              trs_am, 
-                              tot_trs_dnt_am, 
-                              cus_ian_id_no, 
-                              unv_lyl_crd_no 
-                       FROM   pos_dw_views. posxtpx_pos_tran 
-                       WHERE  (trs_dt >=  date - 1  )
-                       ) h 
-ON              s.fty_id_no = h.fty_id_no 
-LEFT OUTER JOIN 
- ( SELECT src_apl_cd, 
-                              src_sys_idv_id_no, 
-                              nn.crt_ts, 
-                              nn.eml_ad_id ,
-                              e.eml_ad 
-                       FROM   lci_dw_views.lcixtex_src_eml  nn  , lci_dw_nadr_views.lcixtem_eml_ad  e 
-WHERE  src_apl_cd = 'XUI'     AND    substring(src_sys_idv_id_no from 1 FOR 4)='7081'
-       AND  nn.eml_ad_id = e.eml_ad_id ) n
-ON              h.unv_lyl_crd_no = n.src_sys_idv_id_no
-LEFT OUTER JOIN 
-                (   SELECT cus_ian_id_no, 
-                              cus_id_no, 
-                              cus_lst_nm , 
-                              cus_fst_nm , 
-                              st_ln1_ad, 
-                              st_ln2_ad, 
-                              cty_nm, 
-                              ste_cd, 
-                              zip_cd, 
-                              cus_phn_no, 
-                              cus_phn_are_cd, 
-                              cus_alt_phn_no, 
-                              cus_alt_phn_are_cd 
-                       FROM   pos_dw_nadr_views.posxtcn_cus_info ) c 
-ON              h.cus_ian_id_no=c.cus_ian_id_no
-;</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>Y</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>256</xloc>
-      <yloc>64</yloc>
+      <xloc>624</xloc>
+      <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
