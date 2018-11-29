@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_creditShare</name>
+    <name>trf_extract_td_sales</name>
     <description />
     <extended_description />
     <trans_version />
@@ -11,12 +11,12 @@
     <parameters>
       <parameter>
         <name>end_date</name>
-        <default_value>2018-03-04</default_value>
+        <default_value>2018-02-03</default_value>
         <description />
       </parameter>
       <parameter>
         <name>start_date</name>
-        <default_value>2018-03-04</default_value>
+        <default_value>2017-11-12</default_value>
         <description />
       </parameter>
     </parameters>
@@ -447,7 +447,7 @@
   <notepads>
   </notepads>
   <connection>
-    <name>mssql sho_staging_prod</name>
+    <name>mssql sho_staging</name>
     <server>${DB_SERVERNAME_BI_MSSQL_PROD}</server>
     <type>MSSQLNATIVE</type>
     <access>Native</access>
@@ -562,7 +562,7 @@
   </connection>
   <order>
     <hop>
-      <from>teradata sales</from>
+      <from>teradata sales item</from>
       <to>Table output</to>
       <enabled>Y</enabled>
     </hop>
@@ -578,11 +578,11 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <connection>mssql sho_staging_prod</connection>
+    <connection>mssql sho_staging</connection>
     <schema>teradata</schema>
-    <table>td_sales_dly_credit_share</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
+    <table>td_sales_dly_sales_sku_history</table>
+    <commit>750</commit>
+    <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
@@ -597,24 +597,36 @@
     <return_field />
     <fields>
       <field>
-        <column_name>LOC_NO</column_name>
-        <stream_name>LOC_NO</stream_name>
-      </field>
-      <field>
         <column_name>TRS_DT</column_name>
         <stream_name>TRS_DT</stream_name>
       </field>
       <field>
-        <column_name>SCARDAM</column_name>
-        <stream_name>scardam</stream_name>
+        <column_name>LOC_NO</column_name>
+        <stream_name>LOC_NO</stream_name>
       </field>
       <field>
-        <column_name>TOT_MINUS_GC</column_name>
-        <stream_name>tot_minus_gc</stream_name>
+        <column_name>DIV_NO</column_name>
+        <stream_name>DIV_NO</stream_name>
+      </field>
+      <field>
+        <column_name>NETSALES</column_name>
+        <stream_name>NETSALES</stream_name>
+      </field>
+      <field>
+        <column_name>NETUNITS</column_name>
+        <stream_name>NETUNITS</stream_name>
       </field>
       <field>
         <column_name>REC_LOAD_DTM</column_name>
         <stream_name>rec_load_dtm</stream_name>
+      </field>
+      <field>
+        <column_name>ITEM_NBR</column_name>
+        <stream_name>ITEM_NBR</stream_name>
+      </field>
+      <field>
+        <column_name>SKU_NBR</column_name>
+        <stream_name>SKU_NBR</stream_name>
       </field>
     </fields>
     <cluster_schema />
@@ -625,13 +637,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>352</xloc>
-      <yloc>80</yloc>
+      <xloc>208</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>teradata sales</name>
+    <name>teradata sales item</name>
     <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
@@ -642,25 +654,28 @@
       <schema_name />
     </partitioning>
     <connection>teradata_pos_dw_views</connection>
-    <sql>select 
-   mp.fty_id_no as LOC_NO,
-   mp.TRS_DT,
-current_timestamp as rec_load_dtm,
-   sum(case when mp.pos_met_py_typ_cd in ('1','I','J','P') then ( mp.pd_am     )  else 0 end) as scardam ,
-   sum(case when mp.pos_met_py_typ_cd not in ('C','G','H')     then( mp.pd_am    )  else 0 end) as tot_minus_gc    
-  
-  from 
-  shc_work_tbls.TS_SHO_locations  b ,
-pos_dw_views.posxtmp_mtd_pymt mp   
+    <sql>select
+b.TRS_DT, 
+b.LOC_NO, 
+a.DIV_NO, 
+a.ITM_NO as ITEM_NBR,
+b.SKU_NO as SKU_NBR, 
+b.SLL_DLR as NETSALES, 
+b.UN_QT as NETUNITS,
+current_timestamp as rec_load_dtm
+from 
+SPRS_DW_VIEWS.PRODUCT a,
+SPRS_DW_VIEWS.sales b ,
+shc_work_tbls.TS_SHO_locations c
 
- where 
- mp.ian_typ_cd = 'RS'  
-  and 	RSV_PAY_FL &lt;&gt; 'U'
- and   mp.fty_id_no=  b.fty_id_no
- and  mp.TRS_TM     > '05:00:00'    
- AND mp.TRS_DT  between date '${start_date}' and date '${end_date}'
+WHERE 
+a.PRD_IRL_NO = b.PRD_IRL_NO
+AND b.LOC_NO = c.LOC_NO
+AND b.TRS_TYP_CD NOT IN ('M') 
+AND b.LOC_NO NOT IN (9322) 
+AND b.TRS_DT Between date '${start_date}' And date '${end_date}'
 
- group by 1,2, 3</sql>
+</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
