@@ -447,8 +447,8 @@
   <notepads>
   </notepads>
   <connection>
-    <name>mssql sho_staging_prod</name>
-    <server>${DB_SERVERNAME_BI_MSSQL_PROD}</server>
+    <name>mssql sho_staging</name>
+    <server>${DB_SERVERNAME_BI_MSSQL}</server>
     <type>MSSQLNATIVE</type>
     <access>Native</access>
     <database>sho_staging</database>
@@ -578,7 +578,7 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <connection>mssql sho_staging_prod</connection>
+    <connection>mssql sho_staging</connection>
     <schema>teradata</schema>
     <table>td_sales_dly_spp_merch</table>
     <commit>1000</commit>

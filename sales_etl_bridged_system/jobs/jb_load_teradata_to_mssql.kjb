@@ -313,7 +313,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -380,7 +380,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>1152</xloc>
+      <xloc>1120</xloc>
       <yloc>480</yloc>
     </entry>
     <entry>
@@ -389,7 +389,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_brandSales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_brandSales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -435,7 +435,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_bulk_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_bulk_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -481,7 +481,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_lease_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_lease_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -527,7 +527,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_markdown.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_markdown.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -573,7 +573,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_pa_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_pa_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -619,7 +619,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_paMerch.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_paMerch.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -656,7 +656,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>768</xloc>
+      <xloc>736</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -665,7 +665,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_spp_merch.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_spp_merch.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -702,7 +702,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>768</xloc>
+      <xloc>736</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -711,7 +711,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_spp_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_spp_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -748,7 +748,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>768</xloc>
+      <xloc>736</xloc>
       <yloc>352</yloc>
     </entry>
     <entry>
@@ -757,7 +757,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_creditShare.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_creditShare.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -794,7 +794,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>960</xloc>
+      <xloc>928</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -803,7 +803,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_avgTicket.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_avgTicket.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -840,7 +840,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>960</xloc>
+      <xloc>928</xloc>
       <yloc>352</yloc>
     </entry>
     <entry>
@@ -849,7 +849,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_lease_sales_div.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_lease_sales_div.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -886,7 +886,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>1</nr>
-      <xloc>960</xloc>
+      <xloc>928</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -895,7 +895,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\common\trfs\trf_get_date_ranges.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\common\trfs\trf_get_date_ranges.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -958,7 +958,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_avgTicket.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_avgTicket.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -995,7 +995,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>1</nr>
-      <xloc>1152</xloc>
+      <xloc>1120</xloc>
       <yloc>128</yloc>
     </entry>
     <entry>
@@ -1004,7 +1004,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_online_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_online_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -1041,7 +1041,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>1</nr>
-      <xloc>1152</xloc>
+      <xloc>1120</xloc>
       <yloc>240</yloc>
     </entry>
     <entry>
@@ -1050,7 +1050,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_sales_item.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_sales_item.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -1087,7 +1087,7 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>1</nr>
-      <xloc>1152</xloc>
+      <xloc>1120</xloc>
       <yloc>352</yloc>
     </entry>
   </entries>
