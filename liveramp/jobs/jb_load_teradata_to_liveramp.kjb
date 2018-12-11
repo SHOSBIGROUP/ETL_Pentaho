@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
   <name>jb_load_teradata_to_liveramp</name>
-  <description/>
-  <extended_description/>
-  <job_version/>
+  <description />
+  <extended_description />
+  <job_version />
   <directory>/</directory>
   <created_user>-</created_user>
   <created_date>2018/11/08 10:16:13.320</created_date>
@@ -14,12 +14,12 @@
   <slaveservers>
     </slaveservers>
   <job-log-table>
-    <connection/>
-    <schema/>
-    <table/>
-    <size_limit_lines/>
-    <interval/>
-    <timeout_days/>
+    <connection />
+    <schema />
+    <table />
+    <size_limit_lines />
+    <interval />
+    <timeout_days />
     <field>
       <id>ID_JOB</id>
       <enabled>Y</enabled>
@@ -127,10 +127,10 @@
     </field>
   </job-log-table>
   <jobentry-log-table>
-    <connection/>
-    <schema/>
-    <table/>
-    <timeout_days/>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -218,10 +218,10 @@
     </field>
   </jobentry-log-table>
   <channel-log-table>
-    <connection/>
-    <schema/>
-    <table/>
-    <timeout_days/>
+    <connection />
+    <schema />
+    <table />
+    <timeout_days />
     <field>
       <id>ID_BATCH</id>
       <enabled>Y</enabled>
@@ -284,11 +284,11 @@
     </field>
   </channel-log-table>
   <pass_batchid>N</pass_batchid>
-  <shared_objects_file/>
+  <shared_objects_file />
   <entries>
     <entry>
       <name>START</name>
-      <description/>
+      <description />
       <type>SPECIAL</type>
       <start>Y</start>
       <dummy>N</dummy>
@@ -308,25 +308,25 @@
     </entry>
     <entry>
       <name>Transformation</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>C:\Program Files\data-integration\ETL_Pentaho\liveramp\trfs\trf_extract_td_liveramp.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${KETTLE_JOB_DIR}\liveramp\trfs\trf_extract_td_liveramp.ktr</filename>
+      <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
@@ -339,54 +339,54 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
-      <yloc>96</yloc>
+      <xloc>464</xloc>
+      <yloc>112</yloc>
     </entry>
     <entry>
       <name>execute_ftp_scripts</name>
-      <description/>
+      <description />
       <type>SHELL</type>
-      <filename/>
+      <filename />
       <work_directory>C:\Program Files\data-integration\ETL_Pentaho\liveramp\data</work_directory>
       <arg_from_previous>N</arg_from_previous>
       <exec_per_row>N</exec_per_row>
       <set_logfile>N</set_logfile>
-      <logfile/>
+      <logfile />
       <set_append_logfile>N</set_append_logfile>
-      <logext/>
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <insertScript>Y</insertScript>
-      <script>"C:\Program Files (x86)\WinSCP\winscp" sho-bi-ftp:sh0sb1ftp10-d@ec2-52-5-52-68.compute-1.amazonaws.com  /command    "lcd ""C:\Program Files\data-integration\ETL_Pentaho\liveramp\data\""" "put LiveRamp_"${reportdate}".txt"  exit
-"C:\Program Files (x86)\WinSCP\winscp" shoreports@10.236.32.91  /command   "lcd ""C:\Program Files\data-integration\ETL_Pentaho\liveramp\data\""" "cd /LiveRamp_Feed"  "rm *.*" "put LiveRamp_"${reportdate}".txt"  exit</script>
+      <script>"C:\Program Files (x86)\WinSCP\winscp" sho-bi-ftp:sh0sb1ftp10-d@ec2-52-5-52-68.compute-1.amazonaws.com  /command    "lcd ""C:\quicktemp\my_programs\pdi-ce-7.1.0.0-12\data-integration\ETL_Pentaho\liveramp\data\""" "put LiveRamp_"${reportdate}".txt"  exit
+"C:\Program Files (x86)\WinSCP\winscp" shoreports@10.236.32.91  /command   "lcd ""C:\quicktemp\my_programs\pdi-ce-7.1.0.0-12\data-integration\ETL_Pentaho\liveramp\data\""" "cd /LiveRamp_Feed"  "rm *.*" "put LiveRamp_"${reportdate}".txt"  exit</script>
       <loglevel>Basic</loglevel>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>688</xloc>
-      <yloc>80</yloc>
+      <xloc>576</xloc>
+      <yloc>112</yloc>
     </entry>
     <entry>
       <name>Transformation (2)</name>
-      <description/>
+      <description />
       <type>TRANS</type>
       <specification_method>filename</specification_method>
-      <trans_object_id/>
-      <filename>C:\Program Files\data-integration\ETL_Pentaho\liveramp\trfs\trf_extract_td_setvariable.ktr</filename>
-      <transname/>
+      <trans_object_id />
+      <filename>${KETTLE_JOB_DIR}\liveramp\trfs\trf_extract_td_setvariable.ktr</filename>
+      <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
       <exec_per_row>N</exec_per_row>
       <clear_rows>N</clear_rows>
       <clear_files>N</clear_files>
       <set_logfile>N</set_logfile>
-      <logfile/>
-      <logext/>
+      <logfile />
+      <logext />
       <add_date>N</add_date>
       <add_time>N</add_time>
       <loglevel>Basic</loglevel>
       <cluster>N</cluster>
-      <slave_server_name/>
+      <slave_server_name />
       <set_append_logfile>N</set_append_logfile>
       <wait_until_finished>Y</wait_until_finished>
       <follow_abort_remote>N</follow_abort_remote>
@@ -399,8 +399,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>1</nr>
-      <xloc>336</xloc>
-      <yloc>96</yloc>
+      <xloc>320</xloc>
+      <yloc>112</yloc>
     </entry>
   </entries>
   <hops>
@@ -446,7 +446,7 @@
       <name>{"_":"Embedded MetaStore Elements","namespace":"pentaho","type":"Default Run Configuration"}</name>
       <attribute>
         <key>Pentaho local</key>
-        <value>{"children":[{"children":[],"id":"server","value":null},{"children":[],"id":"clustered","value":"N"},{"children":[],"id":"name","value":"Pentaho local"},{"children":[],"id":"description","value":null},{"children":[],"id":"pentaho","value":"N"},{"children":[],"id":"readOnly","value":"Y"},{"children":[],"id":"sendResources","value":"N"},{"children":[],"id":"logRemoteExecutionLocally","value":"N"},{"children":[],"id":"remote","value":"N"},{"children":[],"id":"local","value":"Y"},{"children":[],"id":"showTransformations","value":"N"}],"id":"Pentaho local","value":null,"name":"Pentaho local","owner":null,"ownerPermissionsList":[]}</value>
+        <value>{"children":[{"children":[],"id":"server","value":null},{"children":[],"id":"clustered","value":"N"},{"children":[],"id":"name","value":"Pentaho local"},{"children":[],"id":"description","value":null},{"children":[],"id":"readOnly","value":"Y"},{"children":[],"id":"sendResources","value":"N"},{"children":[],"id":"logRemoteExecutionLocally","value":"N"},{"children":[],"id":"remote","value":"N"},{"children":[],"id":"local","value":"Y"},{"children":[],"id":"showTransformations","value":"N"}],"id":"Pentaho local","value":null,"name":"Pentaho local","owner":null,"ownerPermissionsList":[]}</value>
       </attribute>
     </group>
   </attributes>
