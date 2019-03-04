@@ -343,7 +343,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\common\trfs\trf_get_date_ranges.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\common\trfs\trf_get_date_ranges.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -406,7 +406,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_online_sales.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_online_sales.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>
@@ -452,7 +452,7 @@
       <type>TRANS</type>
       <specification_method>filename</specification_method>
       <trans_object_id />
-      <filename>${KETTLE_JOB_DIR_PROD}\sales_etl_bridged_system\trfs\trf_extract_td_sales_item.ktr</filename>
+      <filename>${KETTLE_JOB_DIR}\sales_etl_bridged_system\trfs\trf_extract_td_sales_item.ktr</filename>
       <transname />
       <arg_from_previous>N</arg_from_previous>
       <params_from_previous>N</params_from_previous>

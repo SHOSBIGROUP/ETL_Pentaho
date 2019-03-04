@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_pa_sales</name>
+    <name>trf_extract_ts_sho_locations</name>
     <description />
     <extended_description />
     <trans_version />
@@ -9,16 +9,6 @@
     <trans_status>0</trans_status>
     <directory>/</directory>
     <parameters>
-      <parameter>
-        <name>end_date</name>
-        <default_value>2018-05-13</default_value>
-        <description />
-      </parameter>
-      <parameter>
-        <name>start_date</name>
-        <default_value>2018-05-13</default_value>
-        <description />
-      </parameter>
     </parameters>
     <log>
       <trans-log-table>
@@ -438,82 +428,23 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2018/03/27 13:48:54.128</created_date>
+    <created_date>2018/04/16 11:49:01.867</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2018/03/27 13:48:54.128</modified_date>
+    <modified_date>2018/04/16 11:49:01.867</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
   </notepads>
   <connection>
-    <name>mssql sho_staging</name>
-    <server>${DB_SERVERNAME_BI_MSSQL}</server>
-    <type>MSSQLNATIVE</type>
-    <access>Native</access>
-    <database>sho_staging</database>
-    <port>1433</port>
-    <username>${DB_SHO_MSSQL_ETL_USERNAME}</username>
-    <password>${DB_SHO_MSSQL_ETL_PW}</password>
-    <servername />
-    <data_tablespace />
-    <index_tablespace />
-    <attributes>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>IS_CLUSTERED</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>MSSQLUseIntegratedSecurity</code>
-        <attribute>false</attribute>
-      </attribute>
-      <attribute>
-        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>PORT_NUMBER</code>
-        <attribute>1433</attribute>
-      </attribute>
-      <attribute>
-        <code>PRESERVE_RESERVED_WORD_CASE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>QUOTE_ALL_FIELDS</code>
-        <attribute>N</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
-        <attribute>Y</attribute>
-      </attribute>
-      <attribute>
-        <code>USE_POOLING</code>
-        <attribute>N</attribute>
-      </attribute>
-    </attributes>
-  </connection>
-  <connection>
-    <name>teradata_pos_dw_views</name>
-    <server>${DB_SERVERNAME_SHC_TERADATA}</server>
+    <name>SHC Teradata CDW</name>
+    <server>s00t0108.searshc.com</server>
     <type>TERADATA</type>
     <access>Native</access>
     <database>POS_DW_VIEWS</database>
     <port>1025</port>
-    <username>${DB_SHC_TERADATA_ETL_USERNAME}</username>
-    <password>${DB_SHC_TERADATA_ETL_PW}</password>
+    <username>jmarlo1</username>
+    <password>Encrypted 2be98afc86aa7a6d5a8128767fe81a7d3</password>
     <servername />
     <data_tablespace />
     <index_tablespace />
@@ -562,80 +493,13 @@
   </connection>
   <order>
     <hop>
-      <from>teradata pa sales</from>
-      <to>Table output</to>
+      <from>Table input</from>
+      <to>gbq raw text output</to>
       <enabled>Y</enabled>
     </hop>
   </order>
   <step>
-    <name>Table output</name>
-    <type>TableOutput</type>
-    <description />
-    <distribute>Y</distribute>
-    <custom_distribution />
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name />
-    </partitioning>
-    <connection>mssql sho_staging</connection>
-    <schema>teradata</schema>
-    <table>td_sales_dly_pa</table>
-    <commit>50</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field />
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field />
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field />
-    <fields>
-      <field>
-        <column_name>TRS_DT</column_name>
-        <stream_name>TRS_DT</stream_name>
-      </field>
-      <field>
-        <column_name>LOC_NO</column_name>
-        <stream_name>LOC_NO</stream_name>
-      </field>
-      <field>
-        <column_name>Div_NO</column_name>
-        <stream_name>DIV_NO</stream_name>
-      </field>
-      <field>
-        <column_name>NetSales</column_name>
-        <stream_name>NetSales</stream_name>
-      </field>
-      <field>
-        <column_name>PAMUNITS</column_name>
-        <stream_name>PAMUNITS</stream_name>
-      </field>
-      <field>
-        <column_name>REC_LOAD_DTM</column_name>
-        <stream_name>rec_load_dtm</stream_name>
-      </field>
-    </fields>
-    <cluster_schema />
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>336</xloc>
-      <yloc>80</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
-    <name>teradata pa sales</name>
+    <name>Table input</name>
     <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
@@ -645,25 +509,9 @@
       <method>none</method>
       <schema_name />
     </partitioning>
-    <connection>teradata_pos_dw_views</connection>
-    <sql>-- PA  sales by div
-SELECT 	S.TRS_DT,
-		S.LOC_NO,
-		P.LN_NO as DIV_NO,
-		current_timestamp as rec_load_dtm,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.SLL_DLR) AS NetSales ,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.UN_QT) AS PAMUNITS 
-
-FROM    
-		SPRS_DW_VIEWS.SALES S 
-		INNER JOIN shc_work_tbls.TS_SHO_locations L ON (S.LOC_NO=L.LOC_NO)
-		INNER JOIN SPRS_DW_VIEWS.PRODUCT P ON (S.PRD_IRL_NO=P.PRD_IRL_NO)
-
-WHERE   S.SLS_TYP_CD='M' 
-	AND S.TRS_DT between date '${start_date}' and date '${end_date}'
-	AND POS_DIV=70
-	
-GROUP BY 1,2,3,4
+    <connection>SHC Teradata CDW</connection>
+    <sql>select CS_STR_TYP,STR_TYP_DS,STR_TYP_DS_ABR,fty_id_no,LOC_NO,LOC_OPN_DT,LOC_CLS_DT,CLZ_CD,STR_TYP_CD,RGN_NO,DSTR_NO,FMDC_NO,RRC_NO,CDC_NO,LOC_DS,LOC_CTY,LOC_STE,LOC_ZIP
+from shc_work_tbls.TS_SHO_locations
 </sql>
     <limit>0</limit>
     <lookup />
@@ -678,8 +526,281 @@ GROUP BY 1,2,3,4
       </output>
     </remotesteps>
     <GUI>
-      <xloc>208</xloc>
-      <yloc>80</yloc>
+      <xloc>128</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>gbq raw text output</name>
+    <type>TextFileOutput</type>
+    <description />
+    <distribute>Y</distribute>
+    <custom_distribution />
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name />
+    </partitioning>
+    <separator>,</separator>
+    <enclosure>"</enclosure>
+    <enclosure_forced>N</enclosure_forced>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
+    <header>Y</header>
+    <footer>N</footer>
+    <format>DOS</format>
+    <compression>None</compression>
+    <encoding />
+    <endedLine />
+    <fileNameInField>N</fileNameInField>
+    <fileNameField />
+    <create_parent_folder>N</create_parent_folder>
+    <file>
+      <name>${TERADATA_OUT_DIR}td_locations_</name>
+      <is_command>N</is_command>
+      <servlet_output>N</servlet_output>
+      <do_not_open_new_file_init>N</do_not_open_new_file_init>
+      <extention>csv</extention>
+      <append>N</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>Y</SpecifyFormat>
+      <date_time_format>yyyy-MM-dd.HH.mm.ss</date_time_format>
+      <add_to_result_filenames>Y</add_to_result_filenames>
+      <pad>N</pad>
+      <fast_dump>Y</fast_dump>
+      <splitevery>0</splitevery>
+    </file>
+    <fields>
+      <field>
+        <name>CS_STR_TYP</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>2</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>STR_TYP_DS</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>75</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>STR_TYP_DS_ABR</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>10</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>fty_id_no</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>9</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>LOC_NO</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>9</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>LOC_OPN_DT</name>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>1</precision>
+      </field>
+      <field>
+        <name>LOC_CLS_DT</name>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>1</precision>
+      </field>
+      <field>
+        <name>CLZ_CD</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>STR_TYP_CD</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>5</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>RGN_NO</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>9</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>DSTR_NO</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>9</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>FMDC_NO</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>4</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>RRC_NO</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>4</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>CDC_NO</name>
+        <type>Integer</type>
+        <format>0</format>
+        <currency />
+        <decimal>.</decimal>
+        <group>,</group>
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>4</length>
+        <precision>0</precision>
+      </field>
+      <field>
+        <name>LOC_DS</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>25</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>LOC_CTY</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>13</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>LOC_STE</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>2</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>LOC_ZIP</name>
+        <type>String</type>
+        <format />
+        <currency />
+        <decimal />
+        <group />
+        <nullif />
+        <trim_type>none</trim_type>
+        <length>9</length>
+        <precision>-1</precision>
+      </field>
+    </fields>
+    <cluster_schema />
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>272</xloc>
+      <yloc>96</yloc>
       <draw>Y</draw>
     </GUI>
   </step>

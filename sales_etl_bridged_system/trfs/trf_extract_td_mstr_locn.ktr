@@ -437,7 +437,7 @@
   </notepads>
   <connection>
     <name>mssql sho_staging</name>
-    <server>${DB_SERVERNAME_BI_MSSQL}</server>
+    <server>${DB_SERVERNAME_BI_MSSQL_PROD}</server>
     <type>MSSQLNATIVE</type>
     <access>Native</access>
     <database>sho_staging</database>

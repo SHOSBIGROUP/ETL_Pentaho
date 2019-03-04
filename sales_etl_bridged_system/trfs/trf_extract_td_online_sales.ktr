@@ -11,12 +11,12 @@
     <parameters>
       <parameter>
         <name>end_date</name>
-        <default_value />
+        <default_value>2018-12-11</default_value>
         <description />
       </parameter>
       <parameter>
         <name>start_date</name>
-        <default_value />
+        <default_value>2018-12-10</default_value>
         <description />
       </parameter>
     </parameters>

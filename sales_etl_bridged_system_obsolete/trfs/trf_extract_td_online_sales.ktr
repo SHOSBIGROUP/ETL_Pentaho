@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_pa_sales</name>
+    <name>trf_extract_td_sales</name>
     <description />
     <extended_description />
     <trans_version />
@@ -11,12 +11,12 @@
     <parameters>
       <parameter>
         <name>end_date</name>
-        <default_value>2018-05-13</default_value>
+        <default_value />
         <description />
       </parameter>
       <parameter>
         <name>start_date</name>
-        <default_value>2018-05-13</default_value>
+        <default_value />
         <description />
       </parameter>
     </parameters>
@@ -562,7 +562,7 @@
   </connection>
   <order>
     <hop>
-      <from>teradata pa sales</from>
+      <from>teradata sales</from>
       <to>Table output</to>
       <enabled>Y</enabled>
     </hop>
@@ -580,8 +580,8 @@
     </partitioning>
     <connection>mssql sho_staging</connection>
     <schema>teradata</schema>
-    <table>td_sales_dly_pa</table>
-    <commit>50</commit>
+    <table>td_sales_dly_online_sales</table>
+    <commit>1000</commit>
     <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
@@ -597,27 +597,79 @@
     <return_field />
     <fields>
       <field>
+        <column_name>RIN_FTY_ID_NO</column_name>
+        <stream_name>RIN_FTY_ID_NO</stream_name>
+      </field>
+      <field>
+        <column_name>REG_NO</column_name>
+        <stream_name>REG_NO</stream_name>
+      </field>
+      <field>
+        <column_name>TRS_NO</column_name>
+        <stream_name>TRS_NO</stream_name>
+      </field>
+      <field>
         <column_name>TRS_DT</column_name>
         <stream_name>TRS_DT</stream_name>
       </field>
       <field>
-        <column_name>LOC_NO</column_name>
-        <stream_name>LOC_NO</stream_name>
+        <column_name>TRS_TM</column_name>
+        <stream_name>TRS_TM</stream_name>
       </field>
       <field>
-        <column_name>Div_NO</column_name>
-        <stream_name>DIV_NO</stream_name>
+        <column_name>Div_Nbr</column_name>
+        <stream_name>Div_Nbr</stream_name>
       </field>
       <field>
-        <column_name>NetSales</column_name>
-        <stream_name>NetSales</stream_name>
+        <column_name>Item_Nbr</column_name>
+        <stream_name>Item_Nbr</stream_name>
       </field>
       <field>
-        <column_name>PAMUNITS</column_name>
-        <stream_name>PAMUNITS</stream_name>
+        <column_name>LN_ITM_TRS_TYP_CD</column_name>
+        <stream_name>LN_ITM_TRS_TYP_CD</stream_name>
       </field>
       <field>
-        <column_name>REC_LOAD_DTM</column_name>
+        <column_name>quantity</column_name>
+        <stream_name>quantity</stream_name>
+      </field>
+      <field>
+        <column_name>POS_SLS_TRS_AM</column_name>
+        <stream_name>POS_SLS_TRS_AM</stream_name>
+      </field>
+      <field>
+        <column_name>TOT_LN_MD_AM</column_name>
+        <stream_name>TOT_LN_MD_AM</stream_name>
+      </field>
+      <field>
+        <column_name>LN_ITM_TAX_AM</column_name>
+        <stream_name>LN_ITM_TAX_AM</stream_name>
+      </field>
+      <field>
+        <column_name>Amount</column_name>
+        <stream_name>Amount</stream_name>
+      </field>
+      <field>
+        <column_name>STORE</column_name>
+        <stream_name>STORE</stream_name>
+      </field>
+      <field>
+        <column_name>MSC_ACN_NO</column_name>
+        <stream_name>MSC_ACN_NO</stream_name>
+      </field>
+      <field>
+        <column_name>FORMAT_TYPE</column_name>
+        <stream_name>FORMAT_TYPE</stream_name>
+      </field>
+      <field>
+        <column_name>FORMAT_SUB_TYPE</column_name>
+        <stream_name>FORMAT_SUB_TYPE</stream_name>
+      </field>
+      <field>
+        <column_name>LN_ITM_TRS_TYP_CD_1</column_name>
+        <stream_name>LN_ITM_TRS_TYP_CD_1</stream_name>
+      </field>
+      <field>
+        <column_name>rec_load_dtm</column_name>
         <stream_name>rec_load_dtm</stream_name>
       </field>
     </fields>
@@ -629,13 +681,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>336</xloc>
-      <yloc>80</yloc>
+      <xloc>208</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>teradata pa sales</name>
+    <name>teradata sales</name>
     <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
@@ -646,24 +698,48 @@
       <schema_name />
     </partitioning>
     <connection>teradata_pos_dw_views</connection>
-    <sql>-- PA  sales by div
-SELECT 	S.TRS_DT,
-		S.LOC_NO,
-		P.LN_NO as DIV_NO,
-		current_timestamp as rec_load_dtm,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.SLL_DLR) AS NetSales ,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.UN_QT) AS PAMUNITS 
+    <sql>SELECT distinct T.RIN_FTY_ID_NO  ,
+L.reg_no , L.TRS_NO,
+L.TRS_DT,
+L.TRS_TM,
+L.DIV_OGP_NO as Div_Nbr,
+L.PRD_ITM_NO as Item_Nbr,
+L.LN_ITM_TRS_TYP_CD,
+L.PRD_QT as quantity,
+L.POS_SLS_TRS_AM,
+L.TOT_LN_MD_AM,
+L.LN_ITM_TAX_AM,
+(L.POS_SLS_TRS_AM +  L.TOT_LN_MD_AM)  as Amount,
+---L.TOT_LN_MD_AM as Total_Markdown,
+--- MKD.MD_AM as Line_Markdown,
+L.FTY_ID_NO AS STORE,
+L.MSC_ACN_NO,
 
-FROM    
-		SPRS_DW_VIEWS.SALES S 
-		INNER JOIN shc_work_tbls.TS_SHO_locations L ON (S.LOC_NO=L.LOC_NO)
-		INNER JOIN SPRS_DW_VIEWS.PRODUCT P ON (S.PRD_IRL_NO=P.PRD_IRL_NO)
+-- L.SLL_ASC_ID_NO as Associate_ID,
+x.format_type,
+x.format_sub_type,L.ln_Itm_TRS_TYP_CD,
+current_timestamp as rec_load_dtm
 
-WHERE   S.SLS_TYP_CD='M' 
-	AND S.TRS_DT between date '${start_date}' and date '${end_date}'
-	AND POS_DIV=70
-	
-GROUP BY 1,2,3,4
+
+FROM                                                                                                                                                                                                                                                             
+POS_DW_VIEWS.POSXTPP_PRD_LIN L 
+
+INNER JOIN                                                                                                                                                                                                                                                                
+LCI_DW_VIEWS.MSTR_LOCN_TBL X  ON L.FTY_ID_NO=X.ORIG_FACILITY_NBR   
+
+INNER JOIN 
+POS_DW_VIEWS.POSXTPX_POS_TRAN T ON (L.CUS_IAN_ID_NO = T.CUS_IAN_ID_NO AND L.IAN_TYP_CD = T.IAN_TYP_CD)
+                                                                                                                                                                                                                         
+
+WHERE 
+FORMAT_TYPE in ('001') AND 
+(FORMAT_SUB_TYPE LIKE 'L%'  or  FORMAT_SUB_TYPE LIKE 'O%'  or FORMAT_SUB_TYPE LIKE 'H%' or  FORMAT_SUB_TYPE LIKE 'M%')  AND     
+(L.TRS_DT between   '${start_date}' and '${end_date}')
+
+--AND (T.RIN_FTY_ID_NO IN  ('0009300','0009313') ) --OR  T.RIN_ASC_ID_NO  IN ('0000075','0007500')   '0009300'. )
+AND T.RIN_FTY_ID_NO IN  ('0009300','0009322','0009333','0009371','0009377','0009388')
+AND L.FTY_ID_NO&lt;&gt;'0009300'
+--AND L.MSC_ACN_NO = '116000'
 </sql>
     <limit>0</limit>
     <lookup />

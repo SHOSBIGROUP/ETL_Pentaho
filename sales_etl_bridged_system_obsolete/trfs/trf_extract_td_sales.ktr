@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_pa_sales</name>
+    <name>trf_extract_td_sales</name>
     <description />
     <extended_description />
     <trans_version />
@@ -11,12 +11,12 @@
     <parameters>
       <parameter>
         <name>end_date</name>
-        <default_value>2018-05-13</default_value>
+        <default_value>2018-08-04</default_value>
         <description />
       </parameter>
       <parameter>
         <name>start_date</name>
-        <default_value>2018-05-13</default_value>
+        <default_value>2018-07-08</default_value>
         <description />
       </parameter>
     </parameters>
@@ -562,7 +562,7 @@
   </connection>
   <order>
     <hop>
-      <from>teradata pa sales</from>
+      <from>teradata sales</from>
       <to>Table output</to>
       <enabled>Y</enabled>
     </hop>
@@ -580,8 +580,8 @@
     </partitioning>
     <connection>mssql sho_staging</connection>
     <schema>teradata</schema>
-    <table>td_sales_dly_pa</table>
-    <commit>50</commit>
+    <table>td_sales_dly_sales</table>
+    <commit>1000</commit>
     <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
@@ -605,16 +605,16 @@
         <stream_name>LOC_NO</stream_name>
       </field>
       <field>
-        <column_name>Div_NO</column_name>
+        <column_name>DIV_NO</column_name>
         <stream_name>DIV_NO</stream_name>
       </field>
       <field>
-        <column_name>NetSales</column_name>
+        <column_name>NETSALES</column_name>
         <stream_name>NetSales</stream_name>
       </field>
       <field>
-        <column_name>PAMUNITS</column_name>
-        <stream_name>PAMUNITS</stream_name>
+        <column_name>NETUNITS</column_name>
+        <stream_name>NetUnits</stream_name>
       </field>
       <field>
         <column_name>REC_LOAD_DTM</column_name>
@@ -629,13 +629,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>336</xloc>
-      <yloc>80</yloc>
+      <xloc>208</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>teradata pa sales</name>
+    <name>teradata sales</name>
     <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
@@ -646,24 +646,23 @@
       <schema_name />
     </partitioning>
     <connection>teradata_pos_dw_views</connection>
-    <sql>-- PA  sales by div
-SELECT 	S.TRS_DT,
-		S.LOC_NO,
-		P.LN_NO as DIV_NO,
-		current_timestamp as rec_load_dtm,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.SLL_DLR) AS NetSales ,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.UN_QT) AS PAMUNITS 
+    <sql>SELECT 					a.TRS_DT,
+									a.LOC_NO,  
+									a.DIV_NO, 
+									SUM(a.REG_GRS_SLL_DLR+a.PRO_GRS_SLL_DLR+a.CLR_GRS_SLL_DLR-a.REG_RTR_SLL_DLR-a.PRO_RTR_SLL_DLR-a.CLR_RTR_SLL_DLR-a.REG_RDU_SLL_DLR-a.PRO_RDU_SLL_DLR-a.CLR_RDU_SLL_DLR) AS NetSales, 
+									SUM(a.REG_GRS_UN_QT+a.PRO_GRS_UN_QT+a.CLR_GRS_UN_QT-a.REG_RTR_UN_QT-a.PRO_RTR_UN_QT-a.CLR_RTR_UN_QT-a.REG_RDU_UN_QT-a.PRO_RDU_UN_QT-a.CLR_RDU_UN_QT) AS NetUnits,
+									current_timestamp as rec_load_dtm
+									
+FROM 						SPRS_DW_VIEWS.DLY_DIV_LOC_SALES AS a,
+									shc_work_tbls.TS_SHO_locations b
 
-FROM    
-		SPRS_DW_VIEWS.SALES S 
-		INNER JOIN shc_work_tbls.TS_SHO_locations L ON (S.LOC_NO=L.LOC_NO)
-		INNER JOIN SPRS_DW_VIEWS.PRODUCT P ON (S.PRD_IRL_NO=P.PRD_IRL_NO)
+WHERE						a.LOC_NO = b.LOC_NO
+									AND a.SLS_TYP_CD NOT IN ('M')
+									AND a.LOC_NO NOT IN (9322) 
+									  
+									AND a.TRS_DT Between date '${start_date}' And date '${end_date}'
 
-WHERE   S.SLS_TYP_CD='M' 
-	AND S.TRS_DT between date '${start_date}' and date '${end_date}'
-	AND POS_DIV=70
-	
-GROUP BY 1,2,3,4
+GROUP BY 1, 2, 3, 6;
 </sql>
     <limit>0</limit>
     <lookup />

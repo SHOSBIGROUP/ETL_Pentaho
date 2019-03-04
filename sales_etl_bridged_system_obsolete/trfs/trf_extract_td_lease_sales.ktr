@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>trf_extract_td_pa_sales</name>
+    <name>trf_extract_td_lease_sales</name>
     <description />
     <extended_description />
     <trans_version />
@@ -562,7 +562,7 @@
   </connection>
   <order>
     <hop>
-      <from>teradata pa sales</from>
+      <from>teradata lease sales</from>
       <to>Table output</to>
       <enabled>Y</enabled>
     </hop>
@@ -580,8 +580,8 @@
     </partitioning>
     <connection>mssql sho_staging</connection>
     <schema>teradata</schema>
-    <table>td_sales_dly_pa</table>
-    <commit>50</commit>
+    <table>td_sales_dly_lease_sales</table>
+    <commit>1000</commit>
     <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
     <use_batch>Y</use_batch>
@@ -597,24 +597,24 @@
     <return_field />
     <fields>
       <field>
-        <column_name>TRS_DT</column_name>
-        <stream_name>TRS_DT</stream_name>
-      </field>
-      <field>
         <column_name>LOC_NO</column_name>
         <stream_name>LOC_NO</stream_name>
       </field>
       <field>
-        <column_name>Div_NO</column_name>
-        <stream_name>DIV_NO</stream_name>
+        <column_name>TRS_DT</column_name>
+        <stream_name>TRS_DT</stream_name>
       </field>
       <field>
-        <column_name>NetSales</column_name>
-        <stream_name>NetSales</stream_name>
+        <column_name>DIV_NO</column_name>
+        <stream_name>div_no</stream_name>
       </field>
       <field>
-        <column_name>PAMUNITS</column_name>
-        <stream_name>PAMUNITS</stream_name>
+        <column_name>LSESALES</column_name>
+        <stream_name>LseSales</stream_name>
+      </field>
+      <field>
+        <column_name>LSEUNITS</column_name>
+        <stream_name>LseUnits</stream_name>
       </field>
       <field>
         <column_name>REC_LOAD_DTM</column_name>
@@ -629,13 +629,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>336</xloc>
+      <xloc>368</xloc>
       <yloc>80</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>teradata pa sales</name>
+    <name>teradata lease sales</name>
     <type>TableInput</type>
     <description />
     <distribute>Y</distribute>
@@ -646,25 +646,30 @@
       <schema_name />
     </partitioning>
     <connection>teradata_pos_dw_views</connection>
-    <sql>-- PA  sales by div
-SELECT 	S.TRS_DT,
-		S.LOC_NO,
-		P.LN_NO as DIV_NO,
-		current_timestamp as rec_load_dtm,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.SLL_DLR) AS NetSales ,
-		SUM((CASE WHEN S.TRS_TYP_CD='S' THEN 1 ELSE -1 END)*S.UN_QT) AS PAMUNITS 
-
-FROM    
-		SPRS_DW_VIEWS.SALES S 
-		INNER JOIN shc_work_tbls.TS_SHO_locations L ON (S.LOC_NO=L.LOC_NO)
-		INNER JOIN SPRS_DW_VIEWS.PRODUCT P ON (S.PRD_IRL_NO=P.PRD_IRL_NO)
-
-WHERE   S.SLS_TYP_CD='M' 
-	AND S.TRS_DT between date '${start_date}' and date '${end_date}'
-	AND POS_DIV=70
+    <sql>-- Lease query
+SELECT                               
+    a.FTY_ID_NO  as LOC_NO, 
+	trs_dt,
+	a.DIV_OGP_NO as div_no,
+	current_timestamp as rec_load_dtm,
+    SUM(a.POS_SLS_TRS_AM+a.TOT_LN_MD_AM+LN_ITM_TAX_AM) AS LseSales,
+    SUM(a.prd_qt) as LseUnits
 	
-GROUP BY 1,2,3,4
-</sql>
+FROM pos_dw_views.posxtpp_prd_lin a 
+		INNER JOIN shc_work_tbls.TS_SHO_locations b ON (a.fty_id_no = b.fty_id_no)
+		INNER JOIN (
+			SELECT  cus_ian_id_no 
+			FROM   POS_DW_VIEWS.posxtmp_mtd_pymt m,
+					shc_work_tbls.TS_SHO_locations  b                                           
+			WHERE m.fty_id_no = b.fty_id_no
+				AND m.pos_met_py_typ_cd  IN ('W')
+                AND m.TRS_DT between date '${start_date}' and date '${end_date}'
+            GROUP BY 1          
+		) filt ON (a.cus_ian_id_no = filt.cus_ian_id_no)
+	
+WHERE a.TRS_DT between date '${start_date}' and date '${end_date}'
+
+GROUP BY 1,2,3,4</sql>
     <limit>0</limit>
     <lookup />
     <execute_each_row>N</execute_each_row>
